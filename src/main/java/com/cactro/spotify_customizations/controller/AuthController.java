@@ -5,10 +5,7 @@ import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +31,7 @@ public class AuthController {
 
     private static final Logger logger = LogManager.getLogger(AuthController.class);
 
-    @GetMapping("/login")
+    @GetMapping("/")
     public void login(HttpServletResponse response) throws IOException {
         String scopes = "user-top-read user-read-currently-playing user-modify-playback-state";
         String authUrl = "https://accounts.spotify.com/authorize" +
@@ -51,7 +48,6 @@ public class AuthController {
     public ResponseEntity<?> callback(@RequestParam String code, HttpSession session) {
 
         logger.info("Authorization code: {}", code);
-
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -77,7 +73,7 @@ public class AuthController {
 
         session.setAttribute("access_token", accessToken);
 
-        return ResponseEntity.ok(responseBody);
+        return new ResponseEntity<>(new String("access_token received"), HttpStatus.OK) ;
     }
 
 
