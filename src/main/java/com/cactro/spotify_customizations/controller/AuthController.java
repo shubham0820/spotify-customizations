@@ -72,7 +72,7 @@ public class AuthController {
         Map<String, Object> responseBody = response.getBody();
         String accessToken = (String) responseBody.get("access_token");
 
-        logger.info("Access token: {}", accessToken);
+        logger.info("Acces  s token: {}", accessToken);
 
         return ResponseEntity.ok(responseBody);
     }
