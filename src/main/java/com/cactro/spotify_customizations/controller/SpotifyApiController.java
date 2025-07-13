@@ -21,7 +21,7 @@ public class SpotifyApiController {
         headers.setBearerAuth(token);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
-        String url = "https://api.spotify.com/v1/me/top/tracks?limit=10";
+        String url = "https://api.spotify.com/v1/me/tracks?limit=10";
 
         ResponseEntity<String> response = restTemplate.exchange(
                 url,
