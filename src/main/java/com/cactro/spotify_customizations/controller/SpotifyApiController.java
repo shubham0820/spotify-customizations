@@ -1,5 +1,6 @@
 package com.cactro.spotify_customizations.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
@@ -11,13 +12,13 @@ public class SpotifyApiController {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
-    @Value("${spotify.access.token}")
-    private String accessToken; // You can inject this for now or pass dynamically
-
     @GetMapping("/top-tracks")
-    public ResponseEntity<?> getTopTracks() {
+    public ResponseEntity<?> getTopTracks(HttpSession session) {
+
+        String token = (String) session.getAttribute("access_token");
+
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
+        headers.setBearerAuth(token);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         String url = "https://api.spotify.com/v1/me/top/tracks?limit=10";
@@ -33,9 +34,11 @@ public class SpotifyApiController {
     }
 
     @GetMapping("/now-playing")
-    public ResponseEntity<?> getNowPlaying() {
+    public ResponseEntity<?> getNowPlaying(HttpSession session) {
+        String token = (String) session.getAttribute("access_token");
+
         HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(accessToken);
+        headers.setBearerAuth(token);
         HttpEntity<Void> entity = new HttpEntity<>(headers);
 
         String url = "https://api.spotify.com/v1/me/player/currently-playing";

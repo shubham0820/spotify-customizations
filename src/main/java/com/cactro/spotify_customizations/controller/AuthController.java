@@ -1,6 +1,7 @@
 package com.cactro.spotify_customizations.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -47,7 +48,7 @@ public class AuthController {
 
 
     @GetMapping("/callback")
-    public ResponseEntity<?> callback(@RequestParam String code) {
+    public ResponseEntity<?> callback(@RequestParam String code, HttpSession session) {
 
         logger.info("Authorization code: {}", code);
 
@@ -72,9 +73,12 @@ public class AuthController {
         Map<String, Object> responseBody = response.getBody();
         String accessToken = (String) responseBody.get("access_token");
 
-        logger.info("Acces  s token: {}", accessToken);
+        logger.info("Access token: {}", accessToken);
+
+        session.setAttribute("access_token", accessToken);
 
         return ResponseEntity.ok(responseBody);
     }
+
 
 }
