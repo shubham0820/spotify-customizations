@@ -49,7 +49,8 @@ public class AuthController {
     @GetMapping("/callback")
     public ResponseEntity<?> callback(@RequestParam String code) {
 
-        logger.debug("code: " + code);
+        logger.info("Authorization code: {}", code);
+
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -71,7 +72,8 @@ public class AuthController {
         Map<String, Object> responseBody = response.getBody();
         String accessToken = (String) responseBody.get("access_token");
 
-        // TODO: Save token in session, cookie, or DB
+        logger.info("Access token: {}", accessToken);
+
         return ResponseEntity.ok(responseBody);
     }
 
