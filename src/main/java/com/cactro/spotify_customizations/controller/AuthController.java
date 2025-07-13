@@ -1,5 +1,6 @@
 package com.cactro.spotify_customizations.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,10 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @RestController
-public class App {
+public class AuthController {
     @Value("${spotify-customizations.client.clientId")
     private String clientId;
 
@@ -27,7 +31,21 @@ public class App {
     @Value("${spotify-customizations.client.redirectUri")
     private String redirectUri;
 
-    private static final Logger logger = LogManager.getLogger(App.class);
+    private static final Logger logger = LogManager.getLogger(AuthController.class);
+
+    @GetMapping("/login")
+    public void login(HttpServletResponse response) throws IOException {
+        String scopes = "user-top-read user-read-currently-playing user-modify-playback-state";
+        String authUrl = "https://accounts.spotify.com/authorize" +
+                "?client_id=" + clientId +
+                "&response_type=code" +
+                "&redirect_uri=" + URLEncoder.encode(redirectUri, StandardCharsets.UTF_8) +
+                "&scope=" + URLEncoder.encode(scopes, StandardCharsets.UTF_8);
+
+        response.sendRedirect(authUrl);
+    }
+
+
     @GetMapping("/callback")
     public ResponseEntity<?> callback(@RequestParam String code) {
 
