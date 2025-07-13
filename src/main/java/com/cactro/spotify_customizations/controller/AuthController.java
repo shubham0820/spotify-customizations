@@ -23,13 +23,13 @@ import java.util.Map;
 
 @RestController
 public class AuthController {
-    @Value("${spotify-customizations.client.clientId")
+    @Value("${spotify-customizations.client.clientId}")
     private String clientId;
 
-    @Value("${spotify-customizations.client.clientSecret")
+    @Value("${spotify-customizations.client.clientSecret}")
     private String clientSecret;
 
-    @Value("${spotify-customizations.client.redirectUri")
+    @Value("${spotify-customizations.client.redirectUri}")
     private String redirectUri;
 
     private static final Logger logger = LogManager.getLogger(AuthController.class);
